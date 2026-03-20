@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="relative bg-dark rounded-3xl overflow-hidden mb-10 px-8 py-16 text-white text-center">
+  <div class="absolute inset-0 opacity-10" style="background: radial-gradient(circle at 70% 50%, #F97316 0%, transparent 60%);"></div>
+  <div class="relative z-10">
+    <p class="text-brand font-semibold text-sm uppercase tracking-widest mb-3">Fast Delivery · Fresh Food</p>
+    <h1 class="text-5xl md:text-6xl font-display font-extrabold mb-4 leading-tight">
+      Hungry? <span class="text-brand">We Got You.</span>
+    </h1>
+    <p class="text-gray-400 text-lg mb-8">Order from your favourite restaurants in minutes.</p>
+
+    <!-- Search -->
+    <form method="GET" class="flex items-center max-w-xl mx-auto gap-2">
+      <input
+        type="text" name="q"
+        placeholder="Search restaurants or cuisine..."
+        value="{{ request.GET.q }}"
+        class="flex-1 px-5 py-3 rounded-full text-gray-800 text-sm outline-none focus:ring-2 focus:ring-brand"
+      />
+      <button type="submit" class="btn-brand px-6 py-3 rounded-full font-semibold text-sm">Search</button>
+    </form>
+  </div>
+</div>
+
+<!-- Categories -->
+<div class="flex flex-wrap gap-3 mb-10 justify-center">
+  <a href="/" class="px-5 py-2 rounded-full bg-brand text-white text-sm font-semibold shadow">⭐ All</a>
+  <a href="/?cat=biryani" class="px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-700 text-sm font-medium hover:border-brand hover:text-brand transition-all shadow-sm">🍛 Biryani</a>
+  <a href="/?cat=pizza" class="px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-700 text-sm font-medium hover:border-brand hover:text-brand transition-all shadow-sm">🍕 Pizza</a>
+  <a href="/?cat=burger" class="px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-700 text-sm font-medium hover:border-brand hover:text-brand transition-all shadow-sm">🍔 Burger</a>
+  <a href="/?cat=south" class="px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-700 text-sm font-medium hover:border-brand hover:text-brand transition-all shadow-sm">🥘 South Indian</a>
+  <a href="/?cat=chinese" class="px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-700 text-sm font-medium hover:border-brand hover:text-brand transition-all shadow-sm">🍜 Chinese</a>
+  <a href="/?cat=dessert" class="px-5 py-2 rounded-full bg-white border border-gray-200 text-gray-700 text-sm font-medium hover:border-brand hover:text-brand transition-all shadow-sm">🍮 Dessert</a>
+</div>
+
+<!-- Section Title -->
+<h2 class="text-2xl font-display font-bold text-gray-800 mb-6">
+  🔥 Popular Restaurants
+  {% if request.GET.q %}
+    <span class="text-base font-body font-normal text-gray-400 ml-2">— results for "{{ request.GET.q }}"</span>
+  {% endif %}
+</h2>
+
+<!-- Restaurant Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {% for r in restaurants %}
+  <div class="bg-white rounded-2xl overflow-hidden shadow-sm card-hover">
+    {% if r.image %}
+      <img src="{{ r.image.url }}" class="w-full h-48 object-cover" alt="{{ r.name }}"/>
+    {% else %}
+      <div class="w-full h-48 bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-4xl">🍽️</div>
+    {% endif %}
+
+    <div class="p-5">
+      <div class="flex items-center justify-between mb-1">
+        <h3 class="font-display font-bold text-lg text-gray-900">{{ r.name }}</h3>
+        <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">⭐ {{ r.rating }}</span>
+      </div>
+      <p class="text-sm text-gray-500 mb-1">📍 {{ r.location }}</p>
+      <p class="text-sm text-gray-500 mb-4">🚴 {{ r.delivery_time }} mins · 🍴 {{ r.get_category_display }}</p>
+
+      <a href="/menu/{{ r.id }}/">
+        <button class="btn-brand w-full py-2 rounded-xl font-semibold text-sm">View Menu</button>
+      </a>
+    </div>
+  </div>
+  {% empty %}
+    <div class="col-span-3 text-center py-20 text-gray-400">
+      <p class="text-5xl mb-4">🍽️</p>
+      <p class="text-xl font-display font-semibold">No restaurants found</p>
+      <p class="text-sm mt-2">Try a different search or category</p>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

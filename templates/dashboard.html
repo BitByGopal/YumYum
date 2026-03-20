@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="flex items-center justify-between mb-8">
+  <h1 class="text-3xl font-display font-extrabold text-gray-900">🍴 Restaurant Dashboard</h1>
+  <span class="bg-green-100 text-green-700 text-sm font-semibold px-4 py-2 rounded-full">{{ orders|length }} Order{{ orders|length|pluralize }}</span>
+</div>
+
+{% if orders %}
+<div class="space-y-5">
+  {% for o in orders %}
+  <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+
+    <!-- Order Header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+      <div class="flex items-center gap-4">
+        <div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide">Order</p>
+          <p class="font-display font-bold text-gray-900">#{{ o.id }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide">Customer</p>
+          <p class="font-semibold text-gray-800">{{ o.user.username }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide">Amount</p>
+          <p class="font-bold text-brand">₹{{ o.total_amount }}</p>
+        </div>
+      </div>
+
+      <!-- Status Badge -->
+      <span class="px-4 py-1 rounded-full text-sm font-semibold
+        {% if o.status == 'pending' %}bg-yellow-100 text-yellow-700
+        {% elif o.status == 'accepted' %}bg-blue-100 text-blue-700
+        {% elif o.status == 'preparing' %}bg-orange-100 text-orange-700
+        {% elif o.status == 'delivered' %}bg-green-100 text-green-700
+        {% endif %}">
+        {{ o.status|capfirst }}
+      </span>
+    </div>
+
+    <!-- Order Items -->
+    <div class="px-6 py-4 flex items-center justify-between flex-wrap gap-4">
+      <div>
+        <p class="text-xs text-gray-400 uppercase tracking-wide mb-2">Items Ordered</p>
+        <div class="flex flex-wrap gap-2">
+          {% for item in o.items_list %}
+          <span class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full font-medium">
+            {{ item.food_item.item_name }} × {{ item.quantity }}
+          </span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      {% if o.status != 'delivered' %}
+        <a href="/update-status/{{ o.id }}/">
+          <button class="btn-brand px-6 py-2 rounded-xl font-semibold text-sm">
+            {% if o.status == 'pending' %}Accept Order
+            {% elif o.status == 'accepted' %}Mark Preparing
+            {% elif o.status == 'preparing' %}Mark Delivered
+            {% endif %}
+          </button>
+        </a>
+      {% else %}
+        <span class="text-green-600 font-semibold text-sm">🎉 Delivered</span>
+      {% endif %}
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+  <div class="text-center py-24">
+    <p class="text-6xl mb-4">📋</p>
+    <h2 class="text-2xl font-display font-bold text-gray-700 mb-2">No orders yet</h2>
+    <p class="text-gray-400">New orders will appear here automatically.</p>
+  </div>
+{% endif %}
+
+{% endblock %}
