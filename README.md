@@ -9,7 +9,7 @@
 ![Status](https://img.shields.io/badge/Status-Live-success?style=flat-square)
 
 ## 🌐 Live Demo
-**[yumyum-app.up.railway.app](https://yumyum-app.up.railway.app)** ← *(update after deploy)*
+**[yumyum-app.up.railway.app](https://web-production-58c6.up.railway.app/)**
 
 > **Demo Credentials**
 > - Customer: `demo_user` / `demo1234`
