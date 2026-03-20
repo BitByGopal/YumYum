@@ -17,6 +17,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-changeme-in-productio
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 # ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['web-production-58c6.up.railway.app']
 
 # ── Apps ──────────────────────────────────────
 INSTALLED_APPS = [
@@ -107,3 +108,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ── Payment ───────────────────────────────────
 CASHFREE_APP_ID     = os.environ.get('CASHFREE_APP_ID', '')
 CASHFREE_SECRET_KEY = os.environ.get('CASHFREE_SECRET_KEY', '')
+CSRF_TRUSTED_ORIGINS = ['https://web-production-58c6.up.railway.app']
